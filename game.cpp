@@ -5,14 +5,40 @@
 
 using namespace std;
 
+class Player {
+	public : char symbol;
+
+	public : Player(char s) {
+		symbol = s;
+	}
+
+	public : int getPlayColumn() {
+		int s;
+		cout << "Enter column number (1-7)" << endl;
+		cin >> s;
+		//ADD CHECK HERE
+		return s-1;
+	}
+};
+
 class Game {
 
 	vector<vector<char>> field;
+	Player* p1;
+	Player* p2;
+	bool end;
 
 	/*
 	*	CONSTRUCTOR
 	*/
 	public : Game() {
+
+		//INITIALISE PLAYERS
+		p1 = new Player('X');
+		p2 = new Player('O');
+
+		end = false;
+
 		int count = 0;
 		for (int i = 0; i < HEIGHT; i++) {
 			field.push_back(vector<char>());
@@ -21,6 +47,11 @@ class Game {
 				count++;
 			}
 		}
+	}
+
+	public : ~Game() {
+		delete p1;
+		delete p2;
 	}
 
 	void showField() {
@@ -32,9 +63,10 @@ class Game {
 		}
 	}
 
-	void playPiece(int colInd) {
+	void playPiece(Player* p) {
+		int colInd = p->getPlayColumn();
 		int rowInd = getNextRow(colInd);
-		field[colInd][rowInd] = 'X';
+		field[colInd][rowInd] = p->symbol;
 	}
 
 	int getNextRow(int colInd) {
@@ -46,14 +78,22 @@ class Game {
 	}
 
 	public : void run() {
-		showField();
-		playPiece(3);
-		showField();
-		playPiece(3);
-		showField();
+		bool p1Turn = true;
+		while (end == false) {
+			showField();
+			if (p1Turn) {
+				playPiece(p1);
+				p1Turn = false;
+			} else {
+				playPiece(p2);
+				p1Turn = true;
+			}
+		}
 	}
 
 };
+
+
 
 /*
 
