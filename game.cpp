@@ -67,6 +67,46 @@ class Game {
 		int colInd = p->getPlayColumn();
 		int rowInd = getNextRow(colInd);
 		field[colInd][rowInd] = p->symbol;
+		checkWin(colInd,rowInd,p);
+	}
+
+	void checkWin(int colInd, int rowInd, Player* p) {
+		
+		char piece = p->symbol;
+
+		//VERTICALS
+		int count = 0;
+		for (int i = 0; i<HEIGHT; i++) {
+			if(field[colInd][i] == piece) {
+				count++;
+			} else {
+				count = 0;
+			}
+
+			if (count >= 4) {
+				//Player wins
+				end = true;
+			}
+		}
+
+		//HORIZONTALS
+		count = 0;
+		for (int i = 0; i<HEIGHT; i++) {
+			if (field[i][rowInd] == piece) {
+				count++;
+			} else {
+				count = 0;
+			}
+
+			if(count >= 4) {
+				//Player wins
+				end = true;
+			}
+
+		}
+
+		//DIAGONALS
+		count = 0;
 	}
 
 	int getNextRow(int colInd) {
@@ -103,7 +143,7 @@ class Game {
 |0,3|1,3|
 |0,2|1,2|
 |0,1|1,1|
-|0,0|1,0|
+|0,0|1,0|2,0|3,0|4,0|
 
 */
 
